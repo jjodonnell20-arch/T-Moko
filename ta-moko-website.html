@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tā Moko — The Sacred Art of Māori Tattooing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0a0806;
+    --bg2: #121009;
+    --bg3: #1c1812;
+    --text: #f0ebe0;
+    --muted: #8a7f6e;
+    --accent: #c4783a;
+    --accent2: #e09a5a;
+    --line: rgba(240,235,224,0.1);
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans: 'Jost', system-ui, sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.5rem 4rem;
+    border-bottom: 1px solid transparent;
+    transition: background 0.4s, border-color 0.4s;
+  }
+  nav.scrolled { background: rgba(10,8,6,0.92); border-color: var(--line); backdrop-filter: blur(12px); }
+  .nav-logo { font-family: var(--serif); font-size: 1.1rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text); text-decoration: none; }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.3s; }
+  .nav-links a:hover { color: var(--accent2); }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative; height: 100vh; min-height: 700px;
+    display: flex; align-items: flex-end;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1600&q=80') center/cover no-repeat;
+  }
+  .hero-bg::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(10,8,6,0.98) 0%, rgba(10,8,6,0.6) 50%, rgba(10,8,6,0.3) 100%);
+  }
+
+  /* Koru SVG watermark */
+  .koru-bg {
+    position: absolute; right: -5%; top: 50%; transform: translateY(-50%);
+    width: 55vw; max-width: 780px; opacity: 0.04; pointer-events: none; z-index: 1;
+  }
+
+  .hero-content {
+    position: relative; z-index: 2;
+    padding: 0 4rem 6rem;
+    max-width: 900px;
+  }
+  .hero-eyebrow {
+    font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem;
+  }
+  .hero-eyebrow::before { content: ''; display: block; width: 40px; height: 1px; background: var(--accent); }
+
+  h1.hero-title {
+    font-family: var(--serif); font-weight: 300; font-size: clamp(4rem, 9vw, 9rem);
+    line-height: 0.92; letter-spacing: -0.02em;
+    margin-bottom: 0.15em;
+  }
+  h1.hero-title em { font-style: italic; color: var(--accent2); }
+
+  .hero-subtitle {
+    font-family: var(--serif); font-size: clamp(1.1rem, 2vw, 1.5rem);
+    font-weight: 300; color: var(--muted); margin: 1.5rem 0 2.5rem;
+    max-width: 500px; line-height: 1.5;
+  }
+  .hero-cta {
+    display: inline-flex; align-items: center; gap: 0.75rem;
+    font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--text); text-decoration: none;
+    padding-bottom: 0.5rem; border-bottom: 1px solid var(--accent);
+    transition: color 0.3s, border-color 0.3s;
+  }
+  .hero-cta:hover { color: var(--accent2); border-color: var(--accent2); }
+  .hero-cta-arrow { font-size: 1rem; transition: transform 0.3s; }
+  .hero-cta:hover .hero-cta-arrow { transform: translateX(4px); }
+
+  .hero-scroll {
+    position: absolute; right: 4rem; bottom: 4rem; z-index: 2;
+    writing-mode: vertical-rl; font-size: 0.65rem; letter-spacing: 0.25em;
+    text-transform: uppercase; color: var(--muted);
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .hero-scroll::after { content: ''; display: block; width: 1px; height: 60px; background: var(--muted); }
+
+  /* ── SECTIONS ── */
+  section { padding: 7rem 4rem; }
+  .section-inner { max-width: 1200px; margin: 0 auto; }
+
+  .section-label {
+    font-size: 0.65rem; letter-spacing: 0.35em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 1.5rem;
+  }
+
+  h2.section-title {
+    font-family: var(--serif); font-weight: 300;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    line-height: 1.05; letter-spacing: -0.01em;
+    margin-bottom: 2rem;
+  }
+  h2.section-title em { font-style: italic; color: var(--accent2); }
+
+  h3.card-title {
+    font-family: var(--serif); font-size: 1.5rem; font-weight: 400;
+    margin-bottom: 0.75rem;
+  }
+
+  p.body-text {
+    font-size: 1rem; line-height: 1.85; color: rgba(240,235,224,0.75);
+    max-width: 60ch;
+  }
+
+  /* ── DIVIDER ── */
+  .divider { width: 100%; height: 1px; background: var(--line); }
+
+  /* ── INTRO SPLIT ── */
+  .intro-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 6rem;
+    align-items: start;
+  }
+  .intro-right { padding-top: 3rem; }
+  .intro-right p { margin-bottom: 1.5rem; }
+
+  .stat-row { display: flex; gap: 3rem; margin-top: 3rem; padding-top: 3rem; border-top: 1px solid var(--line); }
+  .stat-item {}
+  .stat-num { font-family: var(--serif); font-size: 3rem; font-weight: 300; color: var(--accent2); line-height: 1; }
+  .stat-label { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-top: 0.25rem; }
+
+  /* ── HISTORY TIMELINE ── */
+  .timeline-section { background: var(--bg2); }
+
+  .timeline {
+    position: relative; margin-top: 4rem;
+  }
+  .timeline::before {
+    content: ''; position: absolute; left: 200px; top: 0; bottom: 0; width: 1px; background: var(--line);
+  }
+  .timeline-item {
+    display: grid; grid-template-columns: 200px 1fr;
+    gap: 0 3rem; margin-bottom: 4rem; position: relative;
+  }
+  .timeline-item::before {
+    content: ''; position: absolute; left: 196px; top: 0.4rem;
+    width: 9px; height: 9px; border-radius: 50%;
+    background: var(--bg2); border: 1px solid var(--accent);
+  }
+  .timeline-date {
+    font-family: var(--serif); font-size: 0.85rem; font-weight: 300;
+    color: var(--accent); letter-spacing: 0.1em; text-align: right;
+    padding-top: 0.1rem; padding-right: 3rem;
+  }
+  .timeline-body h3 { font-family: var(--serif); font-size: 1.3rem; font-weight: 400; margin-bottom: 0.5rem; }
+  .timeline-body p { font-size: 0.9rem; color: rgba(240,235,224,0.65); max-width: 55ch; line-height: 1.7; }
+
+  /* ── PATTERNS ── */
+  .patterns-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+    margin-top: 4rem;
+  }
+  .pattern-card {
+    background: var(--bg3); padding: 2.5rem 2rem;
+    cursor: pointer; transition: background 0.3s;
+    position: relative; overflow: hidden;
+  }
+  .pattern-card::before {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+    background: var(--accent); transform: scaleX(0); transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+  .pattern-card:hover { background: #1e1a12; }
+  .pattern-card:hover::before { transform: scaleX(1); }
+  .pattern-card.active { background: #1e1a12; }
+  .pattern-card.active::before { transform: scaleX(1); }
+
+  .pattern-symbol {
+    width: 48px; height: 48px; margin-bottom: 1.5rem;
+    opacity: 0.7;
+  }
+  .pattern-name { font-family: var(--serif); font-size: 1.3rem; margin-bottom: 0.25rem; }
+  .pattern-maori { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+  .pattern-desc { font-size: 0.85rem; color: rgba(240,235,224,0.6); line-height: 1.6; }
+
+  /* ── BELIEF SYSTEM ── */
+  .belief-section { background: var(--bg2); }
+  .belief-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 6rem; align-items: center; }
+  .belief-visual {
+    aspect-ratio: 3/4; background: var(--bg3);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .belief-visual img {
+    width: 100%; height: 100%; object-fit: cover; opacity: 0.6;
+    filter: grayscale(30%);
+  }
+  .belief-visual-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(196,120,58,0.15) 0%, transparent 60%);
+  }
+  .belief-points { list-style: none; margin-top: 2rem; }
+  .belief-point {
+    padding: 1.5rem 0; border-bottom: 1px solid var(--line);
+    display: flex; gap: 1.5rem; align-items: flex-start;
+  }
+  .belief-point:first-child { border-top: 1px solid var(--line); }
+  .belief-num {
+    font-family: var(--serif); font-size: 2rem; color: var(--accent); line-height: 1;
+    flex-shrink: 0; width: 2rem; text-align: center;
+  }
+  .belief-text h4 { font-family: var(--serif); font-size: 1.1rem; font-weight: 400; margin-bottom: 0.3rem; }
+  .belief-text p { font-size: 0.85rem; color: rgba(240,235,224,0.6); line-height: 1.6; }
+
+  /* ── GALLERY ── */
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: auto;
+    gap: 4px; margin-top: 3rem;
+  }
+  .g1 { grid-column: 1/6; grid-row: 1/3; }
+  .g2 { grid-column: 6/9; grid-row: 1/2; }
+  .g3 { grid-column: 9/13; grid-row: 1/2; }
+  .g4 { grid-column: 6/10; grid-row: 2/3; }
+  .g5 { grid-column: 10/13; grid-row: 2/3; }
+
+  .gallery-item {
+    overflow: hidden; background: var(--bg3);
+    position: relative;
+  }
+  .gallery-item img {
+    width: 100%; height: 100%; min-height: 200px;
+    object-fit: cover; display: block;
+    filter: grayscale(20%) sepia(10%);
+    transition: transform 0.6s ease, filter 0.4s ease;
+  }
+  .gallery-item:hover img { transform: scale(1.04); filter: grayscale(0%) sepia(0%); }
+  .gallery-item-overlay {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 1rem 1.25rem;
+    background: linear-gradient(to top, rgba(10,8,6,0.85), transparent);
+    transform: translateY(100%); transition: transform 0.4s ease;
+  }
+  .gallery-item:hover .gallery-item-overlay { transform: translateY(0); }
+  .gallery-caption { font-size: 0.75rem; color: rgba(240,235,224,0.8); letter-spacing: 0.1em; }
+
+  /* ── REVIVAL ── */
+  .revival-section {}
+  .revival-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3rem; margin-top: 4rem; }
+  .revival-card { padding: 2rem 0; border-top: 1px solid var(--line); }
+  .revival-icon { width: 32px; height: 2px; background: var(--accent); margin-bottom: 1.5rem; }
+  .revival-card h3 { font-family: var(--serif); font-size: 1.3rem; font-weight: 400; margin-bottom: 0.75rem; }
+  .revival-card p { font-size: 0.85rem; color: rgba(240,235,224,0.6); line-height: 1.7; }
+
+  /* ── QUOTE ── */
+  .quote-section {
+    background: var(--bg3); text-align: center; padding: 8rem 4rem;
+    position: relative; overflow: hidden;
+  }
+  .quote-mark {
+    font-family: var(--serif); font-size: 12rem; line-height: 0.5;
+    color: var(--accent); opacity: 0.1; position: absolute; top: 3rem; left: 4rem;
+    pointer-events: none;
+  }
+  .quote-text {
+    font-family: var(--serif); font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-weight: 300; font-style: italic; max-width: 800px; margin: 0 auto 2rem;
+    line-height: 1.4; color: var(--text);
+  }
+  .quote-attribution { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--bg2); padding: 4rem;
+    border-top: 1px solid var(--line);
+    display: flex; justify-content: space-between; align-items: flex-end;
+  }
+  .footer-logo { font-family: var(--serif); font-size: 1.8rem; font-weight: 300; color: var(--text); }
+  .footer-note { font-size: 0.75rem; color: var(--muted); max-width: 300px; text-align: right; line-height: 1.6; }
+
+  /* ── ANIMATIONS ── */
+  .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 1.25rem 2rem; }
+    .nav-links { display: none; }
+    section { padding: 5rem 2rem; }
+    .intro-grid, .belief-grid, .revival-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .patterns-grid { grid-template-columns: 1fr; }
+    .timeline::before { left: 0; }
+    .timeline-item { grid-template-columns: 1fr; }
+    .timeline-date { text-align: left; padding: 0 0 0.5rem; }
+    .timeline-item::before { display: none; }
+    .gallery-grid { grid-template-columns: 1fr 1fr; }
+    .g1, .g2, .g3, .g4, .g5 { grid-column: auto; grid-row: auto; }
+    footer { flex-direction: column; gap: 2rem; align-items: flex-start; }
+    .footer-note { text-align: left; }
+    .hero-content { padding: 0 2rem 5rem; }
+    .hero-scroll { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a class="nav-logo" href="#">Tā Moko</a>
+  <ul class="nav-links">
+    <li><a href="#history">History</a></li>
+    <li><a href="#patterns">Patterns</a></li>
+    <li><a href="#beliefs">Beliefs</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#revival">Revival</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+
+  <!-- Koru SVG watermark -->
+  <svg class="koru-bg" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+    <path d="M250,250 m0,-180 a180,180 0 1,1 -0.1,0 Z
+             M250,250 m0,-130 a130,130 0 1,0 0.1,0 Z
+             M250,250 m0,-80 a80,80 0 1,1 -0.1,0 Z"
+          fill="none" stroke="white" stroke-width="1.5"/>
+    <path d="M250 70 Q320 70 350 130 Q380 190 340 230 Q300 270 250 250 Q200 230 190 180 Q180 130 220 100 Q240 85 250 70"
+          fill="none" stroke="white" stroke-width="2"/>
+  </svg>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">New Zealand · Māori Culture · Sacred Tradition</div>
+    <h1 class="hero-title">Tā<br><em>Moko</em></h1>
+    <p class="hero-subtitle">The living language of ancestry, identity, and spirit — written upon the skin.</p>
+    <a class="hero-cta" href="#history">Discover the history <span class="hero-cta-arrow">→</span></a>
+  </div>
+  <div class="hero-scroll">Scroll</div>
+</section>
+
+<!-- INTRO -->
+<section id="intro">
+  <div class="section-inner">
+    <div class="intro-grid fade-up">
+      <div class="intro-left">
+        <p class="section-label">What is Tā Moko</p>
+        <h2 class="section-title">More than ink.<br><em>A second skin</em><br>of meaning.</h2>
+      </div>
+      <div class="intro-right">
+        <p class="body-text">Tā moko is the traditional tattooing practice of the Māori people of New Zealand (Aotearoa). Unlike decorative tattoos, each moko is a deeply personal record — a visible map of a person's whakapapa (genealogy), tribal affiliations, social status, and achievements.</p>
+        <p class="body-text">The word <em>tā</em> means "to strike" or "to carve," and <em>moko</em> refers to the skin markings themselves. For Māori, the face was the most sacred part of the body, making tā moko on the face — particularly for men — the ultimate expression of identity.</p>
+        <p class="body-text">Women traditionally received moko kauae — tattoos on the chin and lips — signifying lineage, femininity, and strength.</p>
+        <div class="stat-row">
+          <div class="stat-item">
+            <div class="stat-num">2,000+</div>
+            <div class="stat-label">Years of tradition</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">700</div>
+            <div class="stat-label">Years in Aotearoa</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">∞</div>
+            <div class="stat-label">Unique designs</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- HISTORY TIMELINE -->
+<section class="timeline-section" id="history">
+  <div class="section-inner">
+    <p class="section-label fade-up">A living history</p>
+    <h2 class="section-title fade-up">Centuries <em>carved</em><br>in memory.</h2>
+    <div class="timeline fade-up">
+
+      <div class="timeline-item">
+        <div class="timeline-date">Before 1200 AD</div>
+        <div class="timeline-body">
+          <h3>Origins in Eastern Polynesia</h3>
+          <p>Tā moko traces its roots to the ancestral Polynesian homeland of Hawaiki. Early Māori settlers arriving in Aotearoa brought tattooing practices from Eastern Polynesia, where body marking was a sacred rite connecting mortals to the divine. Oral tradition credits the art to Mataora, a young chief who descended to the underworld and learned the sacred craft from Uetonga, lord of the dead.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-date">1200s – 1700s</div>
+        <div class="timeline-body">
+          <h3>The Classical Era</h3>
+          <p>During this period, tā moko became the defining mark of Māori identity. Unlike Polynesian cousins who used puncture techniques, Māori masters (tohunga tā moko) used albatross bone chisels — uhitaonga — to carve grooves into the skin, creating deep, ridged designs rather than flat marks. This sculptural quality made Māori moko unique in the Pacific world. The face moko of a high-ranking chief (rangatira) was so individual it was legally equivalent to a signature.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-date">1769</div>
+        <div class="timeline-body">
+          <h3>First European Contact</h3>
+          <p>When Captain James Cook arrived in Aotearoa, his naturalist Joseph Banks documented tā moko in extraordinary detail. Banks wrote of the "most perfect symmetry" in the spiral designs, noting that no two were alike. Europeans were simultaneously fascinated and unsettled — they struggled to understand that these marks were not decoration but autobiography. Early colonial artists produced portraits of tattooed chiefs, inadvertently preserving important records of the art form.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-date">1800s</div>
+        <div class="timeline-body">
+          <h3>Mokomokai & the Colonial Dark Period</h3>
+          <p>The colonial era brought catastrophic disruption. Demand from European collectors for mokomokai — preserved tattooed heads — created a grotesque trade that led to inter-tribal violence. More damaging still, missionary pressure and colonial laws suppressed Māori cultural practices. By the late 1800s, tā moko had nearly disappeared entirely, regarded by colonisers as a mark of savagery rather than the profound cultural institution it was.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-date">1970s – 1990s</div>
+        <div class="timeline-body">
+          <h3>The Māori Renaissance</h3>
+          <p>The Māori cultural renaissance (Māori: te orokohanga) ignited a profound revival of language, arts, and identity. Pioneering artists like Robyn Kahukiwa and Para Matchitt reintegrated traditional motifs into contemporary art. By the 1990s, a new generation of practitioners — led by tohunga like Gordon Toi Hutchings and Te Rangitu Netana — began reclaiming tā moko not as historical artefact, but as living, evolving practice.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-date">Today</div>
+        <div class="timeline-body">
+          <h3>Tā Moko Reborn</h3>
+          <p>Tā moko is now experiencing its most significant revival in over 150 years. Māori across Aotearoa and the global diaspora reclaim their moko as an act of sovereignty, healing, and pride. Contemporary tohunga blend traditional chisel techniques with modern tools while maintaining rigorous cultural protocols. Critically, iwi (tribes) and whānau (families) have led important conversations establishing that tā moko is tapu — sacred — and that non-Māori wearing genuine moko constitutes cultural appropriation.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PATTERNS & MEANINGS -->
+<section id="patterns">
+  <div class="section-inner">
+    <p class="section-label fade-up">Decoding the designs</p>
+    <h2 class="section-title fade-up">Every curve,<br>every spiral —<br><em>a word.</em></h2>
+    <p class="body-text fade-up" style="margin-bottom: 0;">The motifs of tā moko are not random. Each element is a glyph in a visual language, readable by those trained to understand it. Hover each pattern to explore its meaning.</p>
+    <div class="patterns-grid fade-up" id="patterns-grid">
+
+      <div class="pattern-card active">
+        <svg class="pattern-symbol" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M24 8 C36 8 40 20 36 28 C32 36 20 36 16 28 C12 20 18 14 24 16 C28 18 28 24 24 24" stroke="#c4783a" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </svg>
+        <div class="pattern-name">Koru</div>
+        <div class="pattern-maori">Unfolding fern frond</div>
+        <div class="pattern-desc">The most iconic symbol — an unfurling ponga (silver fern) frond representing new life, growth, strength, and peace. In moko, koru spirals radiate from the nostrils (representing descent from primordial breath) and mark a person's connection to the earth and their ancestors.</div>
+      </div>
+
+      <div class="pattern-card">
+        <svg class="pattern-symbol" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 24 Q16 8 24 16 Q32 24 40 16 Q48 8 44 24 Q40 36 24 36 Q8 36 8 24Z" stroke="#c4783a" stroke-width="2" fill="none"/>
+        </svg>
+        <div class="pattern-name">Pakati</div>
+        <div class="pattern-maori">Dog-skin cloak pattern</div>
+        <div class="pattern-desc">Interlocking triangular forms derived from the weaving patterns of kahu kurī — cloaks made from dog skin worn by warriors and chiefs. When incorporated into moko, pakati marks a person's courage in battle and their role as a protector of the iwi (tribe).</div>
+      </div>
+
+      <div class="pattern-card">
+        <svg class="pattern-symbol" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 40 L24 8 L40 40 Z" stroke="#c4783a" stroke-width="2" fill="none"/>
+          <path d="M8 40 L24 20 L40 40" stroke="#c4783a" stroke-width="1" fill="none" opacity="0.5"/>
+        </svg>
+        <div class="pattern-name">Unaunahi</div>
+        <div class="pattern-maori">Fish scale motif</div>
+        <div class="pattern-desc">Overlapping scale-like shapes representing the ocean's abundance and the significance of fish as a life-sustaining resource. Found most often on people with deep connections to coastal iwi or those whose ancestors were renowned fishermen and navigators of the Pacific.</div>
+      </div>
+
+      <div class="pattern-card">
+        <svg class="pattern-symbol" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="8" y="16" width="32" height="4" stroke="#c4783a" stroke-width="1.5" fill="none"/>
+          <rect x="8" y="24" width="32" height="4" stroke="#c4783a" stroke-width="1.5" fill="none"/>
+          <rect x="8" y="32" width="32" height="4" stroke="#c4783a" stroke-width="1.5" fill="none"/>
+        </svg>
+        <div class="pattern-name">Ahu ahu mataroa</div>
+        <div class="pattern-maori">Athletic achievement</div>
+        <div class="pattern-desc">Horizontal bands of varying widths that flow across the cheeks and jaw, recording athletic achievements, physical endurance, and feats of strength. The width and number of bands convey the magnitude of accomplishment — the thickest bands mark the most celebrated deeds.</div>
+      </div>
+
+      <div class="pattern-card">
+        <svg class="pattern-symbol" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M24 8 C8 8 8 40 24 40 C40 40 40 8 24 8Z M24 16 C16 16 16 32 24 32 C32 32 32 16 24 16Z" stroke="#c4783a" stroke-width="1.5" fill="none"/>
+        </svg>
+        <div class="pattern-name">Haehae</div>
+        <div class="pattern-maori">Parallel lines of rank</div>
+        <div class="pattern-desc">Parallel curved lines flowing along the contours of the face from brow to jaw. The number of lines and their placement directly encode social rank within the tribal hierarchy. A high chief might bear many fine, closely spaced lines — each one a generation of noble lineage made visible.</div>
+      </div>
+
+      <div class="pattern-card">
+        <svg class="pattern-symbol" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 24 Q24 8 40 24 Q24 40 8 24Z" stroke="#c4783a" stroke-width="1.5" fill="none"/>
+          <circle cx="24" cy="24" r="4" stroke="#c4783a" stroke-width="1.5" fill="none"/>
+        </svg>
+        <div class="pattern-name">Pitau</div>
+        <div class="pattern-maori">Prosperity & growth spiral</div>
+        <div class="pattern-desc">Curved, tapering forms resembling tendrils or prows of waka (canoes), representing forward movement, prosperity, and growth in all aspects of life. Pitau frequently marks the brow region — close to the seat of thought — signifying intellectual leadership and the ability to guide a community.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- BELIEF SYSTEM -->
+<section class="belief-section" id="beliefs">
+  <div class="section-inner">
+    <div class="belief-grid fade-up">
+      <div>
+        <p class="section-label">Wairua — Spirituality</p>
+        <h2 class="section-title">Sacred skin,<br><em>divine</em><br>inheritance.</h2>
+        <p class="body-text">Tā moko is inseparable from Māori cosmology. The designs do not simply decorate — they are tapu (sacred), carrying the mana (spiritual authority) of the wearer's entire ancestral line. To understand tā moko is to understand how Māori see the relationship between past, present, and future.</p>
+        <ul class="belief-points">
+          <li class="belief-point">
+            <div class="belief-num">01</div>
+            <div class="belief-text">
+              <h4>Whakapapa — Genealogical Record</h4>
+              <p>Every element of a moko encodes genealogy. A face is literally a family tree — readable by elders who understand its grammar. The left side traditionally represents the father's lineage; the right, the mother's. No two are ever the same, because no two lives are.</p>
+            </div>
+          </li>
+          <li class="belief-point">
+            <div class="belief-num">02</div>
+            <div class="belief-text">
+              <h4>Mana — Spiritual Authority</h4>
+              <p>Mana is the inherited and acquired spiritual power that determines a person's standing in the world. Tā moko is both a record and an amplifier of mana — wearing it correctly increases one's spiritual potency. An untattooed face was considered a blank page, an identity unwritten.</p>
+            </div>
+          </li>
+          <li class="belief-point">
+            <div class="belief-num">03</div>
+            <div class="belief-text">
+              <h4>Tapu — The Sacred Prohibition</h4>
+              <p>The process of receiving tā moko is governed by strict tapu. The tohunga tā moko (master practitioner) undergoes ritual preparation; the recipient observes food restrictions; the act itself is a threshold moment — the person who sits for moko is not the same one who rises afterward. The skin has been remade.</p>
+            </div>
+          </li>
+          <li class="belief-point">
+            <div class="belief-num">04</div>
+            <div class="belief-text">
+              <h4>Atua — Connection to the Gods</h4>
+              <p>Mythology places the origin of tā moko with the atua (gods) themselves. Uetonga taught Mataora the art in Rarohenga (the underworld), and Mataora carried it back to the living world. This divine origin means every moko is a thread connecting its wearer to the atua — a mark of continuity between the mortal and immortal realms.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <div class="belief-visual">
+          <img src="https://images.unsplash.com/photo-1566438480900-0609be27a4be?w=600&q=80" alt="Māori carved sculpture detail" loading="lazy">
+          <div class="belief-visual-overlay"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="section-inner">
+    <p class="section-label fade-up">Visual Archive</p>
+    <h2 class="section-title fade-up">The art<br><em>in form.</em></h2>
+    <div class="gallery-grid fade-up">
+      <div class="gallery-item g1">
+        <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80" alt="New Zealand landscape" loading="lazy">
+        <div class="gallery-item-overlay"><span class="gallery-caption">Aotearoa — The Land of the Long White Cloud</span></div>
+      </div>
+      <div class="gallery-item g2">
+        <img src="https://images.unsplash.com/photo-1511497584788-876760111969?w=600&q=80" alt="Carved wood detail" loading="lazy">
+        <div class="gallery-item-overlay"><span class="gallery-caption">Whakairo — Māori wood carving</span></div>
+      </div>
+      <div class="gallery-item g3">
+        <img src="https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?w=600&q=80" alt="Spiral fern detail" loading="lazy">
+        <div class="gallery-item-overlay"><span class="gallery-caption">Koru — the silver fern spiral</span></div>
+      </div>
+      <div class="gallery-item g4">
+        <img src="https://images.unsplash.com/photo-1542621334-a254cf47733d?w=600&q=80" alt="Carved stone" loading="lazy">
+        <div class="gallery-item-overlay"><span class="gallery-caption">Pounamu — greenstone, the heart of Aotearoa</span></div>
+      </div>
+      <div class="gallery-item g5">
+        <img src="https://images.unsplash.com/photo-1548625361-58a9b86aa83b?w=600&q=80" alt="Traditional weaving" loading="lazy">
+        <div class="gallery-item-overlay"><span class="gallery-caption">Raranga — the weaving traditions</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<div class="quote-section fade-up">
+  <div class="quote-mark">"</div>
+  <p class="quote-text">"Ko te moko te tohu o te rangatira — the tattoo is the mark of the chief."</p>
+  <div class="quote-attribution">Māori Whakataukī — Proverb</div>
+</div>
+
+<!-- CONTEMPORARY REVIVAL -->
+<section id="revival">
+  <div class="section-inner">
+    <p class="section-label fade-up">The living tradition</p>
+    <h2 class="section-title fade-up">Reclaimed,<br><em>reborn,</em><br>resurgent.</h2>
+    <p class="body-text fade-up">After generations of suppression, tā moko is flourishing. The contemporary revival is not mere nostalgia — it is an assertion of sovereignty, a healing of colonial wounds, and a radical act of cultural continuity.</p>
+    <div class="revival-grid fade-up">
+      <div class="revival-card">
+        <div class="revival-icon"></div>
+        <h3>Cultural Sovereignty</h3>
+        <p>Leading iwi and tohunga have established clear cultural protocols around tā moko, distinguishing it from generic "tribal" tattoo designs. The Māori community asserts that genuine tā moko belongs exclusively to those with Māori whakapapa — it is not a style, it is a birthright. This position has gained increasing legal and cultural recognition in Aotearoa and internationally.</p>
+      </div>
+      <div class="revival-card">
+        <div class="revival-icon"></div>
+        <h3>Kirituhi for Non-Māori</h3>
+        <p>For non-Māori who wish to honour Pacific or indigenous art forms, kirituhi (skin writing) offers a path — designs inspired by tā moko aesthetics but without the genealogical specificity of genuine moko. This distinction is crucial: kirituhi is crafted for the individual without claiming ancestral meaning, allowing appreciation without appropriation.</p>
+      </div>
+      <div class="revival-card">
+        <div class="revival-icon"></div>
+        <h3>Global Māori Identity</h3>
+        <p>With significant Māori populations in Australia, the United Kingdom, and beyond, tā moko has become a global symbol of identity for the diaspora. For many, receiving their moko thousands of miles from Aotearoa is a powerful reclamation — a way to carry home on their skin, to be immediately recognisable as Māori to other Māori anywhere in the world.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-logo">Tā Moko</div>
+    <p style="font-size:0.75rem;color:var(--muted);margin-top:0.5rem;">The Sacred Art of Māori Tattooing</p>
+  </div>
+  <div class="footer-note">
+    This site is created with deep respect for Māori culture and the living tradition of tā moko. All cultural information is presented for educational purposes.
+  </div>
+</footer>
+
+<script>
+// Nav scroll effect
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// Fade-up on scroll
+const fadeEls = document.querySelectorAll('.fade-up');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+fadeEls.forEach(el => observer.observe(el));
+
+// Pattern card interactivity
+document.querySelectorAll('.pattern-card').forEach(card => {
+  card.addEventListener('mouseenter', () => {
+    document.querySelectorAll('.pattern-card').forEach(c => c.classList.remove('active'));
+    card.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
